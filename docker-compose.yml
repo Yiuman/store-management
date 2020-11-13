@@ -1,0 +1,29 @@
+#构建单体前后端
+version: '3.3'
+services:
+  backend:
+#    没镜像的情况下使用
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: store-backend
+    restart: always
+#    volumes:
+#    - ../data/elasticsearch/data:/usr/share/elasticsearch/data　　
+    ports:
+    - "8080:8080"
+
+  front:
+    image: nginx
+    container_name: store-front
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  #挂载nginx配置
+      - /Users/yiumankam/workspace/vue_space/citrus-vuetify/dist:/usr/share/nginx/html/    #挂载项目
+    ports:
+      - "80:80"
+    depends_on:
+      - "backend"
+
+#运行
+#    docker-compose -f ./docker-compose.yml up
