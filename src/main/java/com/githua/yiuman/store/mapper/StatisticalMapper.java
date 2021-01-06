@@ -1,6 +1,7 @@
 package com.githua.yiuman.store.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.githua.yiuman.store.dto.StatisticalDto;
@@ -20,7 +21,7 @@ import java.math.BigDecimal;
  */
 @Mapper
 @Repository
-public interface StatisticalMapper {
+public interface StatisticalMapper  {
 
     @Select("select count(1) from sm_product")
     Long countProducts();
