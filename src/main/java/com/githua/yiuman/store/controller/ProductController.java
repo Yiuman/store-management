@@ -5,9 +5,9 @@ import com.githua.yiuman.store.service.ProductService;
 import com.github.yiuman.citrus.support.crud.query.QueryParam;
 import com.github.yiuman.citrus.support.crud.rest.BaseCrudController;
 import com.github.yiuman.citrus.support.crud.service.CrudService;
+import com.github.yiuman.citrus.support.crud.view.impl.DialogView;
+import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
 import com.github.yiuman.citrus.support.http.ResponseEntity;
-import com.github.yiuman.citrus.support.model.DialogView;
-import com.github.yiuman.citrus.support.model.Page;
 import com.github.yiuman.citrus.support.utils.Buttons;
 import com.github.yiuman.citrus.support.widget.Inputs;
 import com.github.yiuman.citrus.support.widget.Textarea;
@@ -45,30 +45,30 @@ public class ProductController extends BaseCrudController<Product, Long> {
     }
 
     @Override
-    protected Page<Product> createPage() throws Exception {
-        Page<Product> page = super.createPage();
-        page.addHeader("货号", "productNo");
-        page.addHeader("品名(+型号)", "productNameModel", product -> {
+    protected Object createView() {
+        PageTableView<Product> view = new PageTableView<>();
+        view.addHeader("货号", "productNo");
+        view.addHeader("品名(+型号)", "productNameModel", product -> {
             String model = product.getModel();
             model = StringUtils.isEmpty(model) ? "" : String.format("（%s）", model);
             return product.getProductName() + model;
         });
-        page.addHeader("厂家", "manufacturer");
-        page.addHeader("数量", "inventory");
-        page.addHeader("存放位置", "location");
+        view.addHeader("厂家", "manufacturer");
+        view.addHeader("数量", "inventory");
+        view.addHeader("存放位置", "location");
         //添加默认按钮
-        page.addButton(Buttons.defaultButtonsWithMore());
+        view.addButton(Buttons.defaultButtonsWithMore());
         //添加默认行内操作
-        page.addActions(Buttons.defaultActions());
+        view.addAction(Buttons.defaultActions());
 
-        page.addWidget("货号", "productNo");
-        page.addWidget("品名", "productName");
-        page.addWidget("厂家", "manufacturer");
-        return page;
+        view.addWidget("货号", "productNo");
+        view.addWidget("品名", "productName");
+        view.addWidget("厂家", "manufacturer");
+        return view;
     }
 
     @Override
-    protected DialogView createDialogView() throws Exception {
+    protected Object createEditableView() {
         DialogView dialogView = new DialogView();
         dialogView.setWidth(800);
         dialogView.addEditField(new Inputs("品名", "productName").placeholder("必填")).addRule("required");
@@ -81,6 +81,8 @@ public class ProductController extends BaseCrudController<Product, Long> {
         dialogView.addEditField(new Textarea("规格", "standard"));
         dialogView.addEditField(new Textarea("存放位置", "location"));
         return dialogView;
+
+
     }
 
     @Override

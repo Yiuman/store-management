@@ -5,7 +5,7 @@ import com.githua.yiuman.store.service.ProductSaleService;
 import com.github.yiuman.citrus.support.crud.query.QueryParam;
 import com.github.yiuman.citrus.support.crud.rest.BaseQueryController;
 import com.github.yiuman.citrus.support.crud.service.CrudService;
-import com.github.yiuman.citrus.support.model.Page;
+import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
 import com.github.yiuman.citrus.support.utils.Buttons;
 import com.github.yiuman.citrus.support.widget.DatePicker;
 import lombok.Data;
@@ -37,27 +37,26 @@ public class SaleDetailsController extends BaseQueryController<ProductSaleDto, L
     }
 
     @Override
-    protected Page<ProductSaleDto> createPage() throws Exception {
-        Page<ProductSaleDto> page = super.createPage();
-        page.setHasSelect(false);
-        page.addHeader("销售日期", "saleDate").setSortable(true);
-        page.addHeader("销售单号", "saleNo");
-        page.addHeader("货号", "productNo");
-        page.addHeader("品名(+型号)", "productName");
-        page.addHeader("厂家", "manufacturer");
-        page.addHeader("规格", "standard");
-        page.addHeader("成本单价", "costPrice");
-        page.addHeader("成本总价", "costTotal");
-        page.addHeader("销售单价", "salePrice");
-        page.addHeader("销售总价", "saleTotal");
+    protected Object createView() {
+        PageTableView<ProductSaleDto> view = new PageTableView<>(false);
+        view.addHeader("销售日期", "saleDate").setSortable(true);
+        view.addHeader("销售单号", "saleNo");
+        view.addHeader("货号", "productNo");
+        view.addHeader("品名(+型号)", "productName");
+        view.addHeader("厂家", "manufacturer");
+        view.addHeader("规格", "standard");
+        view.addHeader("成本单价", "costPrice");
+        view.addHeader("成本总价", "costTotal");
+        view.addHeader("销售单价", "salePrice");
+        view.addHeader("销售总价", "saleTotal");
 
-        page.addButton(Buttons.exportButton());
+        view.addButton(Buttons.exportButton());
 
-        page.addWidget(new DatePicker("销售日期", "saleDate"));
-        page.addWidget("货号", "productNo");
-        page.addWidget("销售单号", "saleNo");
-        page.addWidget("品名", "productName");
-        return page;
+        view.addWidget(new DatePicker("销售日期", "saleDate"));
+        view.addWidget("货号", "productNo");
+        view.addWidget("销售单号", "saleNo");
+        view.addWidget("品名", "productName");
+        return view;
     }
 
     @Data

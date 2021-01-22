@@ -5,6 +5,7 @@ import com.githua.yiuman.store.dto.StatisticalDto;
 import com.githua.yiuman.store.mapper.StatisticalMapper;
 import com.github.yiuman.citrus.support.crud.query.QueryParam;
 import com.github.yiuman.citrus.support.crud.rest.BaseQueryController;
+import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
 import com.github.yiuman.citrus.support.model.Header;
 import com.github.yiuman.citrus.support.model.Page;
 import com.github.yiuman.citrus.support.widget.DatePicker;
@@ -33,30 +34,38 @@ public class StatisticalController extends BaseQueryController<StatisticalDto, S
     }
 
     @Override
-    protected Page<StatisticalDto> createPage() throws Exception {
-        Page<StatisticalDto> page = super.createPage();
-        page.setItemKey("businessDate");
-        page.setHasSelect(false);
-        page.addHeader("日期", "businessDate").sortable(true).align(Header.Align.center).width(150);
-        page.addHeader("采购额", "purchase").align(Header.Align.center);
-        page.addHeader("销售额", "sales").align(Header.Align.center);
-        page.addHeader("支出", "expenses").align(Header.Align.center);
-        page.addHeader("销售利润", "profits").align(Header.Align.center);
-        page.addHeader("净利润（销售利润-支出）",
+    protected Object createView() {
+        PageTableView<StatisticalDto> view = new PageTableView<>(false);
+        view.addHeader(
+                Header.builder()
+                        .text("日期")
+                        .value("businessDate")
+                        .sortable(true)
+                        .width(150)
+                        .align(Header.Align.center)
+                        .build()
+        );
+
+        view.addHeader(Header.builder().text("采购额").value("purchase").align(Header.Align.center).build());
+        view.addHeader("销售额", "sales").toBuilder().align(Header.Align.center);
+        view.addHeader("支出", "expenses").toBuilder().align(Header.Align.center);
+        view.addHeader("销售利润", "profits").toBuilder().align(Header.Align.center);
+        view.addHeader("净利润（销售利润-支出）",
                 "net_profits",
-                entity -> entity.getProfits().subtract(entity.getExpenses()))
-        .width(200).align(Header.Align.center);
-        page.addWidget(new DatePicker("日期","businessDate"));
-        return page;
+                entity -> entity.getProfits().subtract(entity.getExpenses())).toBuilder().width(200).align(Header.Align.center);
+        view.addWidget(new DatePicker("日期", "businessDate"));
+        return view;
     }
 
     @Override
-    protected Page<StatisticalDto> selectPage(Page<StatisticalDto> page, QueryWrapper<StatisticalDto> queryWrapper) {
-        return statisticalMapper.selectPage(page, queryWrapper);
+    protected Page<StatisticalDto> selectPage(Page<StatisticalDto> view, QueryWrapper<StatisticalDto> queryWrapper) {
+        Page<StatisticalDto> statisticalDtoPage = statisticalMapper.selectPage(view, queryWrapper);
+        statisticalDtoPage.setItemKey("businessDate");
+        return statisticalDtoPage;
     }
 
     @Data
-    static class StatisticalQuery{
+    static class StatisticalQuery {
 
         @QueryParam
         LocalDate businessDate;

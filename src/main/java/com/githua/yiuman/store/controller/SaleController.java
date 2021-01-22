@@ -7,7 +7,7 @@ import com.githua.yiuman.store.service.SaleService;
 import com.github.yiuman.citrus.support.crud.query.QueryParam;
 import com.github.yiuman.citrus.support.crud.rest.BaseCrudController;
 import com.github.yiuman.citrus.support.crud.service.CrudService;
-import com.github.yiuman.citrus.support.model.Page;
+import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
 import com.github.yiuman.citrus.support.utils.Buttons;
 import com.github.yiuman.citrus.support.utils.LambdaUtils;
 import com.github.yiuman.citrus.support.widget.DatePicker;
@@ -44,11 +44,11 @@ public class SaleController extends BaseCrudController<SaleDto, Long> {
     }
 
     @Override
-    protected Page<SaleDto> createPage() throws Exception {
-        Page<SaleDto> page = new Page<>();
-        page.addHeader("销售单号", "saleNo");
-        page.addHeader("销售日期", "saleDate").setSortable(true);
-        page.addHeader("货品清单", "productNameModel", LambdaUtils.functionWrapper(entity -> {
+    protected Object createView()  {
+        PageTableView<SaleDto> view = new PageTableView<>();
+        view.addHeader("销售单号", "saleNo");
+        view.addHeader("销售日期", "saleDate").setSortable(true);
+        view.addHeader("货品清单", "productNameModel", LambdaUtils.functionWrapper(entity -> {
             List<ProductSaleDto> productSales = saleService.getProductSalesBySaleId(entity.getSaleId());
             entity.setProducts(productSales);
             if (CollectionUtils.isEmpty(productSales)) {
@@ -56,15 +56,15 @@ public class SaleController extends BaseCrudController<SaleDto, Long> {
             }
             return productSales.stream().map(ProductSale::getProductName).collect(Collectors.joining(","));
         }));
-        page.addHeader("成本总价", "costTotal");
-        page.addHeader("销售总价", "saleTotal");
-        page.addHeader("利润", "profits");
-        page.addButton(Buttons.defaultButtonsWithMore());
-        page.addActions(Buttons.defaultActions());
+        view.addHeader("成本总价", "costTotal");
+        view.addHeader("销售总价", "saleTotal");
+        view.addHeader("利润", "profits");
+        view.addButton(Buttons.defaultButtonsWithMore());
+        view.addAction(Buttons.defaultActions());
 
-        page.addWidget("销售单号", "saleNo");
-        page.addWidget(new DatePicker("销售日期", "saleDate"));
-        return page;
+        view.addWidget("销售单号", "saleNo");
+        view.addWidget(new DatePicker("销售日期", "saleDate"));
+        return view;
     }
 
     @Data

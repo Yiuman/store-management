@@ -25,12 +25,12 @@
         <dependency>
             <groupId>com.github.yiuman</groupId>
             <artifactId>citrus-boot-starter</artifactId>
-            <version>0.1.0.RELEASE</version>
+            <version>0.1.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.14</version>
+            <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

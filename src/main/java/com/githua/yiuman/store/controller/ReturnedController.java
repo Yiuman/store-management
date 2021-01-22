@@ -9,9 +9,9 @@ import com.githua.yiuman.store.entity.Sale;
 import com.githua.yiuman.store.service.ProductService;
 import com.githua.yiuman.store.service.SaleService;
 import com.github.yiuman.citrus.support.crud.rest.BaseCrudController;
-import com.github.yiuman.citrus.support.model.DialogView;
+import com.github.yiuman.citrus.support.crud.view.impl.DialogView;
+import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
 import com.github.yiuman.citrus.support.model.Header;
-import com.github.yiuman.citrus.support.model.Page;
 import com.github.yiuman.citrus.support.utils.Buttons;
 import com.github.yiuman.citrus.support.widget.DatePicker;
 import com.github.yiuman.citrus.support.widget.Inputs;
@@ -44,29 +44,33 @@ public class ReturnedController extends BaseCrudController<Returned, Long> {
     }
 
     @Override
-    protected Page<Returned> createPage() throws Exception {
-        Page<Returned> page = super.createPage();
-        page.addHeader("退货日期", "returnedDate").width(120).align(Header.Align.center);
-        page.addHeader("退货号", "returnedDate").width(120).align(Header.Align.center);
-        ;
-        page.addHeader("销售单号", "saleNo_", entity ->
+    protected Object createView() {
+        PageTableView<Returned> view = new PageTableView<>();
+        view.addHeader(
+                Header.builder()
+                        .text("退货日期")
+                        .value("returnedDate")
+                        .width(120)
+                        .align(Header.Align.center)
+                        .build()
+        );
+        view.addHeader("销售单号", "saleNo_", entity ->
                 StringUtils.isEmpty(entity.getSaleNo()) ? "-" : entity.getSaleNo())
                 .setAlign(Header.Align.center);
-        page.addHeader("退货数量", "amount");
-        page.addHeader("退货单价", "price");
-        page.addHeader("退还金额", "total");
-        page.addHeader("原因", "returnReason");
+        view.addHeader("退货数量", "amount");
+        view.addHeader("退货单价", "price");
+        view.addHeader("退还金额", "total");
+        view.addHeader("原因", "returnReason");
 
-        page.addButton(Buttons.defaultButtonsWithMore());
-        page.addActions(Buttons.defaultActions());
-
-        page.addWidget(new DatePicker("退货日期", "returnedDate"));
-        page.addWidget("销售单号", "saleNo");
-        return page;
+        view.addButton(Buttons.defaultButtonsWithMore());
+        view.addAction(Buttons.defaultActions());
+        view.addWidget(new DatePicker("退货日期", "returnedDate"));
+        view.addWidget("销售单号", "saleNo");
+        return view;
     }
 
     @Override
-    protected DialogView createDialogView() throws Exception {
+    protected Object createEditableView() throws Exception {
         DialogView view = new DialogView();
         view.addEditField(new DatePicker("退货日期", "returnedDate"));
         view.addEditField("销售单号", "saleNo");

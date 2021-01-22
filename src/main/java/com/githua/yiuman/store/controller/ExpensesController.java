@@ -5,8 +5,8 @@ import com.githua.yiuman.store.entity.ExpensesType;
 import com.githua.yiuman.store.service.ExpensesTypeService;
 import com.github.yiuman.citrus.support.crud.query.QueryParam;
 import com.github.yiuman.citrus.support.crud.rest.BaseCrudController;
-import com.github.yiuman.citrus.support.model.DialogView;
-import com.github.yiuman.citrus.support.model.Page;
+import com.github.yiuman.citrus.support.crud.view.impl.DialogView;
+import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
 import com.github.yiuman.citrus.support.utils.Buttons;
 import com.github.yiuman.citrus.support.utils.CrudUtils;
 import com.github.yiuman.citrus.support.widget.DatePicker;
@@ -40,22 +40,22 @@ public class ExpensesController extends BaseCrudController<Expenses, Long> {
     }
 
     @Override
-    protected Page<Expenses> createPage() throws Exception {
-        Page<Expenses> page = super.createPage();
-        page.addHeader("支出日期", "expensesDate");
-        page.addHeader("支出项目", "expensesName", entity -> expensesTypeService.get(entity.getTypeId()).getTypeName());
-        page.addHeader("数量", "amount");
-        page.addHeader("金额", "price");
-        page.addHeader("合计", "total");
-        page.addHeader("备注", "remark");
-        page.addButton(Buttons.defaultButtonsWithMore());
-        page.addActions(Buttons.defaultActions());
-        page.addWidget(new DatePicker("支出日期", "expensesDate"));
-        return page;
+    protected Object createView()  {
+        PageTableView<Expenses> view = new PageTableView<>();
+        view.addHeader("支出日期", "expensesDate");
+        view.addHeader("支出项目", "expensesName", entity -> expensesTypeService.get(entity.getTypeId()).getTypeName());
+        view.addHeader("数量", "amount");
+        view.addHeader("金额", "price");
+        view.addHeader("合计", "total");
+        view.addHeader("备注", "remark");
+        view.addButton(Buttons.defaultButtonsWithMore());
+        view.addAction(Buttons.defaultActions());
+        view.addWidget(new DatePicker("支出日期", "expensesDate"));
+        return view;
     }
 
     @Override
-    protected DialogView createDialogView() throws Exception {
+    protected Object createEditableView() throws Exception {
         DialogView dialogView = new DialogView();
         dialogView.addEditField(new DatePicker("支出日期", "expensesDate")).addRule("required");
         dialogView.addEditField("支出项目", "typeId", CrudUtils.getWidget(this, "getExpensesList")).addRule("required");
