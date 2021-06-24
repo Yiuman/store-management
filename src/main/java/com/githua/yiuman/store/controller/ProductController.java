@@ -2,7 +2,7 @@ package com.githua.yiuman.store.controller;
 
 import com.githua.yiuman.store.entity.Product;
 import com.githua.yiuman.store.service.ProductService;
-import com.github.yiuman.citrus.support.crud.query.QueryParam;
+import com.github.yiuman.citrus.support.crud.query.annotations.Like;
 import com.github.yiuman.citrus.support.crud.rest.BaseCrudController;
 import com.github.yiuman.citrus.support.crud.service.CrudService;
 import com.github.yiuman.citrus.support.crud.view.impl.DialogView;
@@ -12,7 +12,7 @@ import com.github.yiuman.citrus.support.utils.Buttons;
 import com.github.yiuman.citrus.support.widget.Inputs;
 import com.github.yiuman.citrus.support.widget.Textarea;
 import lombok.Data;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +50,7 @@ public class ProductController extends BaseCrudController<Product, Long> {
         view.addHeader("货号", "productNo");
         view.addHeader("品名(+型号)", "productNameModel", product -> {
             String model = product.getModel();
-            model = StringUtils.isEmpty(model) ? "" : String.format("（%s）", model);
+            model = ObjectUtils.isEmpty(model) ? "" : String.format("（%s）", model);
             return product.getProductName() + model;
         });
         view.addHeader("厂家", "manufacturer");
@@ -81,13 +81,11 @@ public class ProductController extends BaseCrudController<Product, Long> {
         dialogView.addEditField(new Textarea("规格", "standard"));
         dialogView.addEditField(new Textarea("存放位置", "location"));
         return dialogView;
-
-
     }
 
     @Override
     public Long save(Product entity) throws Exception {
-        if (Objects.isNull(entity.getProductId()) && StringUtils.isEmpty(entity.getProductNo())) {
+        if (Objects.isNull(entity.getProductId()) && ObjectUtils.isEmpty(entity.getProductNo())) {
             entity.setProductNo(UUID.randomUUID().toString());
             entity.setCreatedTime(LocalDateTime.now());
         } else {
@@ -104,13 +102,13 @@ public class ProductController extends BaseCrudController<Product, Long> {
     @Data
     static class ProductQuery {
 
-        @QueryParam(type = "like")
+        @Like
         private String productNo;
 
-        @QueryParam(type = "like")
+        @Like
         private String productName;
 
-        @QueryParam(type = "like")
+        @Like
         private String manufacturer;
     }
 }

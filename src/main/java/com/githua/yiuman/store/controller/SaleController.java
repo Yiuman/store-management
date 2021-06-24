@@ -4,7 +4,7 @@ import com.githua.yiuman.store.dto.ProductSaleDto;
 import com.githua.yiuman.store.dto.SaleDto;
 import com.githua.yiuman.store.entity.ProductSale;
 import com.githua.yiuman.store.service.SaleService;
-import com.github.yiuman.citrus.support.crud.query.QueryParam;
+import com.github.yiuman.citrus.support.crud.query.annotations.Equals;
 import com.github.yiuman.citrus.support.crud.rest.BaseCrudController;
 import com.github.yiuman.citrus.support.crud.service.CrudService;
 import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
@@ -44,7 +44,7 @@ public class SaleController extends BaseCrudController<SaleDto, Long> {
     }
 
     @Override
-    protected Object createView()  {
+    protected Object createView() {
         PageTableView<SaleDto> view = new PageTableView<>();
         view.addHeader("销售单号", "saleNo");
         view.addHeader("销售日期", "saleDate").setSortable(true);
@@ -70,10 +70,10 @@ public class SaleController extends BaseCrudController<SaleDto, Long> {
     @Data
     static class SaleQuery {
 
-        @QueryParam
+        @Equals
         private String saleNo;
 
-        @QueryParam
+        @Equals
         private LocalDate saleDate;
     }
 }

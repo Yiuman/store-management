@@ -2,7 +2,8 @@ package com.githua.yiuman.store.controller;
 
 import com.githua.yiuman.store.dto.ProductPurchaseDto;
 import com.githua.yiuman.store.service.ProductPurchaseService;
-import com.github.yiuman.citrus.support.crud.query.QueryParam;
+import com.github.yiuman.citrus.support.crud.query.annotations.Equals;
+import com.github.yiuman.citrus.support.crud.query.annotations.Like;
 import com.github.yiuman.citrus.support.crud.rest.BaseQueryController;
 import com.github.yiuman.citrus.support.crud.service.CrudService;
 import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
@@ -37,7 +38,7 @@ public class PurchaseDetailsController extends BaseQueryController<ProductPurcha
     }
 
     @Override
-    protected Object createView()  {
+    protected Object createView() {
         PageTableView<ProductPurchaseDto> view = new PageTableView<>(false);
         view.addHeader("进货日期", "purchaseDate").setSortable(true);
         view.addHeader("进货单号", "purchaseNo");
@@ -61,16 +62,16 @@ public class PurchaseDetailsController extends BaseQueryController<ProductPurcha
     @Data
     static class PurchaseDetailsQuery {
 
-        @QueryParam
+        @Equals
         private LocalDate purchaseDate;
 
-        @QueryParam
+        @Equals
         private String productNo;
 
-        @QueryParam
+        @Equals
         private String purchaseNo;
 
-        @QueryParam(type = "like")
+        @Like
         private String productName;
     }
 }

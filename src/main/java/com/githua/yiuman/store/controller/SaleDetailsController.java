@@ -2,7 +2,8 @@ package com.githua.yiuman.store.controller;
 
 import com.githua.yiuman.store.dto.ProductSaleDto;
 import com.githua.yiuman.store.service.ProductSaleService;
-import com.github.yiuman.citrus.support.crud.query.QueryParam;
+import com.github.yiuman.citrus.support.crud.query.annotations.Equals;
+import com.github.yiuman.citrus.support.crud.query.annotations.Like;
 import com.github.yiuman.citrus.support.crud.rest.BaseQueryController;
 import com.github.yiuman.citrus.support.crud.service.CrudService;
 import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
@@ -62,16 +63,16 @@ public class SaleDetailsController extends BaseQueryController<ProductSaleDto, L
     @Data
     static class SaleDetailsQuery {
 
-        @QueryParam
+        @Equals
         private LocalDate saleDate;
 
-        @QueryParam
+        @Equals
         private String productNo;
 
-        @QueryParam
+        @Equals
         private String saleNo;
 
-        @QueryParam(type = "like")
+        @Like
         private String productName;
     }
 

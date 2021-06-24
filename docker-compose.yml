@@ -2,16 +2,16 @@
 version: '3.3'
 services:
   backend:
-#    没镜像的情况下使用
+    #    没镜像的情况下使用
     build:
       context: ./
       dockerfile: Dockerfile
     container_name: store-backend
     restart: always
-#    volumes:
-#    - ../data/elasticsearch/data:/usr/share/elasticsearch/data　　
+    #    volumes:
+    #    - ../data/elasticsearch/data:/usr/share/elasticsearch/data　　
     ports:
-    - "8080:8080"
+      - "8080:8080"
 
   front:
     image: nginx

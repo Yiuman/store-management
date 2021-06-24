@@ -3,7 +3,7 @@ package com.githua.yiuman.store.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.githua.yiuman.store.dto.StatisticalDto;
 import com.githua.yiuman.store.mapper.StatisticalMapper;
-import com.github.yiuman.citrus.support.crud.query.QueryParam;
+import com.github.yiuman.citrus.support.crud.query.annotations.Equals;
 import com.github.yiuman.citrus.support.crud.rest.BaseQueryController;
 import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
 import com.github.yiuman.citrus.support.model.Header;
@@ -67,7 +67,7 @@ public class StatisticalController extends BaseQueryController<StatisticalDto, S
     @Data
     static class StatisticalQuery {
 
-        @QueryParam
+        @Equals
         LocalDate businessDate;
     }
 }

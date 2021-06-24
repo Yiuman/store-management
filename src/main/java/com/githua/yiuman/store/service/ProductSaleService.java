@@ -1,11 +1,11 @@
 package com.githua.yiuman.store.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.githua.yiuman.store.dto.ProductSaleDto;
 import com.githua.yiuman.store.entity.ProductSale;
 import com.githua.yiuman.store.mapper.ProductSaleMapper;
+import com.github.yiuman.citrus.support.crud.mapper.CrudMapper;
 import com.github.yiuman.citrus.support.crud.service.BaseDtoService;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class ProductSaleService extends BaseDtoService<ProductSale, Long, Produc
     }
 
     @Override
-    protected BaseMapper<ProductSale> getBaseMapper() {
+    protected CrudMapper<ProductSale> getBaseMapper() {
         return productSaleMapper;
     }
 

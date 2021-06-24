@@ -3,7 +3,7 @@ package com.githua.yiuman.store.controller;
 import com.githua.yiuman.store.entity.Expenses;
 import com.githua.yiuman.store.entity.ExpensesType;
 import com.githua.yiuman.store.service.ExpensesTypeService;
-import com.github.yiuman.citrus.support.crud.query.QueryParam;
+import com.github.yiuman.citrus.support.crud.query.annotations.Equals;
 import com.github.yiuman.citrus.support.crud.rest.BaseCrudController;
 import com.github.yiuman.citrus.support.crud.view.impl.DialogView;
 import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
@@ -40,7 +40,7 @@ public class ExpensesController extends BaseCrudController<Expenses, Long> {
     }
 
     @Override
-    protected Object createView()  {
+    protected Object createView() {
         PageTableView<Expenses> view = new PageTableView<>();
         view.addHeader("支出日期", "expensesDate");
         view.addHeader("支出项目", "expensesName", entity -> expensesTypeService.get(entity.getTypeId()).getTypeName());
@@ -83,10 +83,10 @@ public class ExpensesController extends BaseCrudController<Expenses, Long> {
     @Data
     static class ExpensesQuery {
 
-        @QueryParam
+        @Equals
         private Long typeId;
 
-        @QueryParam
+        @Equals
         private LocalDate expensesDate;
     }
 }

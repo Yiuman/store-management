@@ -1,11 +1,11 @@
 package com.githua.yiuman.store.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.githua.yiuman.store.dto.ProductSaleDto;
 import com.githua.yiuman.store.dto.SaleDto;
 import com.githua.yiuman.store.entity.Product;
 import com.githua.yiuman.store.entity.Sale;
 import com.githua.yiuman.store.mapper.SaleMapper;
+import com.github.yiuman.citrus.support.crud.mapper.CrudMapper;
 import com.github.yiuman.citrus.support.crud.service.BaseDtoService;
 import com.github.yiuman.citrus.support.utils.LambdaUtils;
 import com.github.yiuman.citrus.system.service.UserService;
@@ -44,12 +44,12 @@ public class SaleService extends BaseDtoService<Sale, Long, SaleDto> {
     }
 
     @Override
-    protected BaseMapper<Sale> getBaseMapper() {
+    protected CrudMapper<Sale> getBaseMapper() {
         return saleMapper;
     }
 
     @Override
-    public boolean beforeSave(SaleDto entity) throws Exception {
+    public boolean beforeSave(SaleDto entity) {
         if (Objects.isNull(entity.getSaleId())) {
             entity.setSellId(userService.getCurrentUserOnlineInfo().getUserId());
             entity.setCreatedTime(LocalDateTime.now());
@@ -77,7 +77,7 @@ public class SaleService extends BaseDtoService<Sale, Long, SaleDto> {
     }
 
     @Override
-    public void afterSave(SaleDto entity) throws Exception {
+    public void afterSave(SaleDto entity) {
         entity.getProducts().forEach(LambdaUtils.consumerWrapper(productSale -> {
             Product product = productService.get(productSale.getProductId());
             product.setUpdatedTime(LocalDateTime.now());

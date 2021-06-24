@@ -4,7 +4,7 @@ import com.githua.yiuman.store.dto.ProductPurchaseDto;
 import com.githua.yiuman.store.dto.PurchaseDto;
 import com.githua.yiuman.store.entity.ProductPurchase;
 import com.githua.yiuman.store.service.PurchaseService;
-import com.github.yiuman.citrus.support.crud.query.QueryParam;
+import com.github.yiuman.citrus.support.crud.query.annotations.Equals;
 import com.github.yiuman.citrus.support.crud.rest.BaseCrudController;
 import com.github.yiuman.citrus.support.crud.service.CrudService;
 import com.github.yiuman.citrus.support.crud.view.impl.PageTableView;
@@ -68,10 +68,10 @@ public class PurchaseController extends BaseCrudController<PurchaseDto, Long> {
     @Data
     static class PurchaseQuery {
 
-        @QueryParam
+        @Equals
         private String purchaseNo;
 
-        @QueryParam
+        @Equals
         private LocalDate purchaseDate;
     }
 
